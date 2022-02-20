@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_home"
+        android:icon="@drawable/home"
+        android:title="@string/tab_home_text" />
+
+    <item
+        android:id="@+id/tab_music"
+        android:icon="@drawable/music"
+        android:title="@string/tab_music_text" />
+
+    <item
+        android:id="@+id/tab_movie"
+        android:icon="@drawable/movie"
+        android:title="@string/tab_movie_text" />
+
+    <item
+        android:id="@+id/tab_map"
+        android:icon="@drawable/map"
+        android:title="@string/tab_map_text" />
+    <item
+        android:id="@+id/tab_my"
+        android:icon="@drawable/my"
+        android:title="@string/tab_my_text" />
+</menu>

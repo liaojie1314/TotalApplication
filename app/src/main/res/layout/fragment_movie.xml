@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/contentRefreshView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#dfdfdf"
+        android:visibility="gone">
+
+        <ListView
+            android:id="@+id/movie_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+
+    <include
+        android:id="@+id/emptyView"
+        layout="@layout/load_on_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/loadingView"
+        layout="@layout/load_on_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/errorView"
+        layout="@layout/load_on_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+</LinearLayout>

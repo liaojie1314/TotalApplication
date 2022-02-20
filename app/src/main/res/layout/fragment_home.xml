@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+<!--            scroll 表示：RecyclerView 往下滚时，我们在看更多信息，这时 AppBarLayout 会隐藏。-->
+<!--            enterAlways 表示： 与 scroll 相反，向上滚时它就出现了。-->
+<!--            snap 表示： 有时候我们会滚动到一半，就是 AppBarLayout 出现或隐藏一半状态，写上 snap 就会自动帮你隐藏或者出现。-->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="#fcfcfc"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:tabIndicatorColor="#ccccff"
+                app:tabSelectedTextColor="#9966cc"
+                app:tabTextColor="#a2c699" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/one_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tab_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>

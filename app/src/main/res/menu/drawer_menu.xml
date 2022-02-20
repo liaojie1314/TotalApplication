@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+<!--    如果为<group>指定checkableBehavior属性，则可以为组内项目实现单选或多选的选择模式。
+checkableBehavior有三种可选值：-->
+<!--    single：组中只有一个项目可以选中（单选按钮）-->
+<!--    all：所有项目均可选中（复选框）-->
+<!--    none：所有项目均无法选中-->
+        <item
+            android:id="@+id/nav_favor"
+            android:title="我的收藏" />
+        <item
+            android:id="@+id/nav_balance"
+            android:title="我的钱包" />
+        <item
+            android:id="@+id/nav_contract"
+            android:title="朋友圈" />
+        <item
+            android:id="@+id/nav_friends"
+            android:title="联系人" />
+        <item
+            android:id="@+id/nav_message"
+            android:title="我的消息" />
+        <item
+            android:id="@+id/nav_settings"
+            android:title="我的设置" />
+    </group>
+</menu>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--item使用-->
+    <!--    android:id：菜单项(MenuItem)的唯一标识-->
+    <!--    android:icon：菜单项的图标（可选）-->
+    <!--    android:title：菜单项的标题（必选）-->
+    <!--    android:showAsAction：指定菜单项的显示方式。常用的有ifRoom、never、always、withText，
+    多个属性值之间可以使用|隔开。-->
+
+    <!--    always：菜单项永远不会被收纳到溢出菜单中，因此在菜单项过多的情况下可能超出菜单栏的显示范围。-->
+    <!--    ifRoom：在空间足够时，菜单项会显示在菜单栏中，否则收纳入溢出菜单中。-->
+    <!--    withText：无论菜单项是否定义了icon属性，都只会显示它的标题，而不会显示图标。
+    使用这种方式的菜单项默认会被收纳入溢出菜单中。-->
+    <!--    never：菜单项永远只会出现在溢出菜单中。-->
+
+    <item
+        android:id="@+id/menu_1"
+        android:icon="@drawable/music"
+        android:title="menu one" />
+    <item
+        android:id="@+id/menu_2"
+        android:icon="@drawable/movie"
+        android:title="menu_two" />
+    <item
+        android:id="@+id/menu_3"
+        android:icon="@drawable/my"
+        android:title="menu_three">
+        <menu>
+            <item
+                android:id="@+id/menu_4"
+                android:icon="@drawable/home"
+                android:title="menu_four" />
+            <item
+                android:id="@+id/menu_5"
+                android:icon="@drawable/map"
+                android:title="menu_five" />
+        </menu>
+    </item>
+</menu>

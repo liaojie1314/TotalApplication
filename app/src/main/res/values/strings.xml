@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">TotalApplication</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="music_text">音乐</string>
+    <string name="my_text">我的</string>
+    <string name="movie_text">视频</string>
+    <string name="map_text">地图</string>
+    <string name="home_text">首页</string>
+    <string name="tab_home_text">首页</string>
+    <string name="tab_music_text">音乐</string>
+    <string name="tab_movie_text">视频</string>
+    <string name="tab_map_text">地图</string>
+    <string name="tab_my_text">我的</string>
+    <string name="loading">正在玩命加载中...</string>
+    <string name="reloading">点击重新加载...</string>
+    <string name="empty">内容为空...</string>
+    <string name="password_text">密码:</string>
+    <string name="hint_password_text">请输入密码</string>
+    <string name="hint_account_text">请输入账号</string>
+    <string name="forget_password_text">忘记密码？</string>
+    <string name="sign_use_message_text">短信登录</string>
+    <string name="account_text">账号:</string>
+    <string name="login_text">登录</string>
+</resources>

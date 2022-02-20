@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <cn.jzvd.JzvdStd
+        android:id="@+id/item_movie_jzvd"
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+
+    </cn.jzvd.JzvdStd>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/item_movie_iv_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/item_movie_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/item_movie_iv_icon"
+            android:text="Tom and Jerry"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/item_movie_tv_heart"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/heart"
+            android:drawablePadding="5dp"
+            android:text=""
+            android:textSize="12dp" />
+        <TextView
+            android:id="@+id/item_movie_tv_comment"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/item_movie_tv_heart"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/comment"
+            android:drawablePadding="5dp"
+            android:text=""
+            android:textSize="12dp" />
+        <TextView
+            android:id="@+id/item_movie_tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_movie_tv_name"
+            android:layout_alignLeft="@id/item_movie_tv_name"
+            android:layout_toLeftOf="@id/item_movie_tv_comment"
+            android:text="猫和老鼠"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+</LinearLayout>
