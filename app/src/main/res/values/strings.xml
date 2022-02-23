@@ -1,7 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <string name="app_name">TotalApplication</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="music_text">音乐</string>
     <string name="my_text">我的</string>
     <string name="movie_text">视频</string>
@@ -32,4 +31,75 @@
     <string name="text_top_tips">置顶</string>
     <string name="text_delete_tips">删除</string>
     <string name="group_information">群通知</string>
+
+    <string name="my">我的</string>
+    <string name="home">首页</string>
+    <string name="about">关于</string>
+    <string name="check_for_updates">检查更新</string>
+    <string name="open_source_code">使用开源项目</string>
+    <string name="slogan">有问题和建议可以向我提出</string>
+    <string name="feedback">反馈</string>
+    <string name="content">内容</string>
+    <string name="upload">上传</string>
+    <string name="contact">联系方式</string>
+    <string name="privateMessage">私信</string>
+    <string name="login_by_uid">UID 登录</string>
+    <string name="login">登录</string>
+    <string name="playlist">歌单</string>
+    <string name="cancel">取消</string>
+    <string name="settings">设置</string>
+    <string name="message">我的消息</string>
+    <string name="center">云贝中心</string>
+    <string name="play_songs_on_mobile">移动网络下播放歌曲</string>
+    <string name="shop">商场</string>
+    <string name="pitch">音高</string>
+    <string name="song_info">歌曲信息</string>
+    <string name="song_id">歌曲 ID</string>
+    <string name="source">来源</string>
+    <string name="type">类型</string>
+    <string name="size">大小</string>
+    <string name="bit_rate">比特率</string>
+    <string name="follow">关注</string>
+    <string name="fans">粉丝</string>
+    <string name="shopped">已购</string>
+    <string name="friends">好友</string>
+    <string name="pan">云盘</string>
+    <string name="boker">博客</string>
+    <string name="moreSettingsMusic">应用</string>
+    <string name="pause_song_after_unplug_headset">拔出耳机后暂停播放</string>
+    <string name="internet_playlist">在线歌单</string>
+    <string name="local_playlist">本地歌单</string>
+    <string name="new_playlist">新建歌单</string>
+    <string name="import_playlist">导入歌单</string>
+    <string name="local_music">本地</string>
+    <string name="history">最近</string>
+    <string name="contact_author">联系作者</string>
+    <string name="author_email">xxxxxx@qq.com</string>
+    <string name="more">更多</string>
+    <string name="comment">评论</string>
+    <string name="music">音乐</string>
+    <string name="artist">艺术家</string>
+    <string name="update_log">版本信息</string>
+    <string name="song_comment">歌曲评论</string>
+    <string name="team_work" translatable="false">我的团队</string>
+    <string name="playlist_recommend">歌单推荐</string>
+    <string name="sentence_recommend">句子推荐</string>
+    <string name="switch_account">退出登录</string>
+    <string name="login_by_phone">手机号登录</string>
+    <string name="search">搜索</string>
+    <string name="experimental">开发中</string>
+    <string name="moreSettings">更多设置</string>
+    <string name="confirm">确定</string>
+    <string name="version">%s(%d) - %s</string>
+    <string name="open_source_introduction">应用介绍</string>
+    <string name="send">发送</string>
+    <string name="songs">首</string>
+    <string name="applicationIntroduce" translatable="false">这是一款基于网易云api开发的音乐APP</string>
+    <string name="hot_search">热门搜索</string>
+    <string name="playlist_number">播放列表</string>
+    <string name="my_favorite_songs">喜欢</string>
+    <string name="equalizer">均衡器</string>
+    <string name="translation">翻译</string>
+    <string name="download">下载</string>
+    <string name="back">返回</string>
 </resources>

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.totalapplication.R;
+
 public class LocalMusicActivity extends AppCompatActivity {
 
     @Override
