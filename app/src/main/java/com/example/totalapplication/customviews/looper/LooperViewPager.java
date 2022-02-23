@@ -1,4 +1,4 @@
-package com.example.totalapplication.views;
+package com.example.totalapplication.customviews.looper;
 
 import android.content.Context;
 import android.util.AttributeSet;

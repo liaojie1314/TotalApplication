@@ -1,8 +1,7 @@
-package com.example.totalapplication;
+package com.example.totalapplication.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,12 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
-import com.example.totalapplication.Utils.PermissionUtils;
+import com.example.totalapplication.R;
 import com.example.totalapplication.adapters.FragmentAdapter;
-import com.example.totalapplication.api.AndroidScheduler;
-import com.example.totalapplication.api.Api;
-import com.example.totalapplication.api.ApiService;
-import com.example.totalapplication.api.NetWorkModule;
 import com.example.totalapplication.domain.ShopInfoBean;
 import com.example.totalapplication.fragments.HomeFragment;
 import com.example.totalapplication.fragments.MapFragment;
@@ -39,19 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 //@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
@@ -62,20 +47,11 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolBar;
     DrawerLayout drawerLayout;
     private NavigationView mNavigationView;
-    private ApiService mApiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        PermissionUtils.requestPermissions(this, PermissionUtils.CODE_READ_EXTERNAL_STORAGE, new PermissionUtils.PermissionGranted() {
-            @Override
-            public void onPermissionGranted(int requestCode) {
-
-            }
-        });
-
         initView();
         initListener();
 
@@ -90,24 +66,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
 
-        NetWorkModule netWorkModule = new NetWorkModule();
-        OkHttpClient okHttpClient = netWorkModule.providerOkHttpClient();
-        Retrofit retrofit = netWorkModule.providerRetrofit(okHttpClient, Api.OPEN_API_BASE_URL);
-        mApiService = netWorkModule.providerApiService(retrofit);
-        mApiService.getPic(1, 5)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidScheduler.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        Log.i(TAG, "data=======>" + s);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Log.i(TAG, "load error.....");
-                    }
-                });
         /*
         mApiService.uploadBody("参数")
                 .subscribeOn(Schedulers.io())//切换到io线程
@@ -162,24 +120,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
-    }
-
-    /**
-     * 此函数为申请权限的回调函数,无论成功失败都会调用这个函数
-     *
-     * @param requestCode  请求码
-     * @param permissions  申请的权限
-     * @param grantResults 申请的结果
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionUtils.requestPermissionResult(this, requestCode, permissions, grantResults, new PermissionUtils.PermissionGranted() {
-            @Override
-            public void onPermissionGranted(int requestCode) {
-
-            }
-        });
     }
 
     private void initListener() {
@@ -373,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .start();
         */
+        /*
         Call<ResponseBody> call = mApiService.post("bhcb", "1243");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -389,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+         */
     }
     /*上传文件
     public void uploadFile(String path){

@@ -1,4 +1,4 @@
-package com.example.totalapplication.views;
+package com.example.totalapplication.customviews.looper;
 
 public class PagerItem {
     private String title;

@@ -1,4 +1,4 @@
-package com.example.totalapplication.views;
+package com.example.totalapplication.customviews.looper;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -137,14 +137,14 @@ public class LooperPager extends LinearLayout {
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             final int realPosition = position % getDataSize();
-            View itemView = getSunView(container, realPosition);
+            View itemView = getLooperView(container, realPosition);
             container.addView(itemView);
             return itemView;
         }
 
         protected abstract int getDataSize();
 
-        protected abstract View getSunView(ViewGroup container, int position);
+        protected abstract View getLooperView(ViewGroup container, int position);
 
     }
 

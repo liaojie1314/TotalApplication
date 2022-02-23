@@ -121,7 +121,7 @@ public class PermissionUtils {
             }
         } else {
             //用户授权了,调用相关功能
-            Toast.makeText(activity, "opened:" + requestPermission, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(activity, "opened:" + requestPermission, Toast.LENGTH_SHORT).show();
             permissionGranted.onPermissionGranted(requestCode);
         }
     }
