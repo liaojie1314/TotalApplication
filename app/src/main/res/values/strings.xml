@@ -102,4 +102,7 @@
     <string name="translation">翻译</string>
     <string name="download">下载</string>
     <string name="back">返回</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="action_sign_in">注册</string>
+    <string name="phone_number_text">请输入手机号</string>
 </resources>

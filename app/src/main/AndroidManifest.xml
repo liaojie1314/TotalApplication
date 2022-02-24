@@ -17,8 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TotalApplication">
-        <activity android:name=".activities.LocalMusicActivity"></activity>
-        <activity android:name=".activities.LoginActivity">
+        <activity android:name=".activities.RegisterActivity"></activity>
+        <activity android:name=".activities.LocalMusicActivity" />
+        <activity android:name=".activities.LoginCellPhoneActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,6 +35,8 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+
+        <service android:name=".services.MusicService" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

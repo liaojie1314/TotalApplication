@@ -39,7 +39,7 @@ import retrofit2.Retrofit;
 
 import static android.os.Build.VERSION_CODES.M;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginCellPhoneActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     int REQUEST_CODE = 1;

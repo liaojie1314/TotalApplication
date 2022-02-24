@@ -1,6 +1,9 @@
 package com.example.totalapplication.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,12 +15,14 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
 import com.example.totalapplication.R;
+import com.example.totalapplication.Utils.ToastUtils;
 import com.example.totalapplication.adapters.FragmentAdapter;
 import com.example.totalapplication.domain.ShopInfoBean;
 import com.example.totalapplication.fragments.HomeFragment;
@@ -54,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initListener();
+
+        //检测通知权限是否打开
+        checkNotificationPermission();
 
         List<Fragment> fragments = new ArrayList<Fragment>();
         fragments.add(new HomeFragment());
@@ -120,6 +128,35 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
+    }
+
+    private void checkNotificationPermission() {
+        boolean areNotificationsEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled();
+        if (!areNotificationsEnabled) {
+            gotoNotificationSetting();
+        }else {
+            ToastUtils.shortToast(this,"通知权限已打开");
+        }
+    }
+
+    private void gotoNotificationSetting() {
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= 26) {
+            // android 8.0引导
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("android.provider.extra.APP_PACKAGE", getPackageName());
+        } else if (Build.VERSION.SDK_INT >= 21) {
+            // android 5.0-7.0
+            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", getPackageName());
+            intent.putExtra("app_uid", getApplicationInfo().uid);
+        } else {
+            // 其他
+            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            intent.setData(Uri.fromParts("package", getPackageName(), null));
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void initListener() {

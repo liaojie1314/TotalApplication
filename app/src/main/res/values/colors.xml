@@ -86,4 +86,8 @@
     <color name="lrc_timeline_text_color">#343434</color>
     <color name="lrc_timeline_color">#809E9E9E</color>
     <color name="lrc_time_text_color">#809E9E9E</color>
+    <color name="colorPrimaryBubble">#3F51B5</color>
+    <color name="colorPrimaryDarkBubble">#303F9F</color>
+    <color name="colorAccentBubble">#FF4081</color>
+    <color name="colorWaveBubble">#433DD9</color>
 </resources>
