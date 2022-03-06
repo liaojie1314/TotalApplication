@@ -37,6 +37,14 @@ android {
 }
 
 dependencies {
+    implementation 'com.just.agentweb:agentweb:4.0.2'
+
+    // jsoup HTML parser library @ https://jsoup.org/
+    implementation 'org.jsoup:jsoup:1.14.3'
+
+    // lottie
+    implementation 'com.airbnb.android:lottie:3.6.0'
+
     //Android SQLite操作框架
     implementation 'org.litepal.guolindev:core:3.1.1'
 

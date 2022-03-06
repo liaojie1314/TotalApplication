@@ -90,4 +90,6 @@
     <color name="colorPrimaryDarkBubble">#303F9F</color>
     <color name="colorAccentBubble">#FF4081</color>
     <color name="colorWaveBubble">#433DD9</color>
+
+    <color name="textInputLayout">#96ffffff</color>
 </resources>

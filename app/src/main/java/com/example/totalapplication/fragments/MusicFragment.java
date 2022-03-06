@@ -1,5 +1,7 @@
 package com.example.totalapplication.fragments;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -7,7 +9,6 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,19 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.totalapplication.R;
-import com.example.totalapplication.Utils.NotificationUtils;
 import com.example.totalapplication.activities.LocalMusicActivity;
-import com.example.totalapplication.activities.MainActivity;
 import com.example.totalapplication.api.AndroidScheduler;
 import com.example.totalapplication.api.Api;
 import com.example.totalapplication.api.ApiService;
@@ -46,8 +43,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class MusicFragment extends Fragment {
     private static final String TAG = "MusicFragment";
@@ -161,7 +156,7 @@ public class MusicFragment extends Fragment {
                                 .build();
                         mManager.notify(1, notification);
                     }
-                    if (position==1){
+                    if (position == 1) {
                         Notification notificationGet = new NotificationCompat.Builder(getActivity(), "subscribe")
                                 .setAutoCancel(true)
                                 .setContentTitle("收到订阅消息")

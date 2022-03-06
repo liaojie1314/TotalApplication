@@ -1,6 +1,7 @@
 package com.example.totalapplication.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -8,8 +9,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +29,7 @@ import com.example.totalapplication.api.NetWorkModule;
 import com.example.totalapplication.api.exception.ApiException;
 import com.example.totalapplication.api.exception.ErrorConsumer;
 import com.example.totalapplication.domain.PhoneLoginBean;
+import com.example.totalapplication.listeners.OnSwipeTouchListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,27 +44,116 @@ import retrofit2.Retrofit;
 
 import static android.os.Build.VERSION_CODES.M;
 
-public class LoginCellPhoneActivity extends AppCompatActivity {
+public class LoginByPhoneActivity extends AppCompatActivity {
+    /*
+    public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "LoginActivity";
+    ImageView imageView;
+    TextView textView;
+    int count = 0;
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
+        imageView = findViewById(R.id.imageView);
+        textView = findViewById(R.id.textView);
+        imageView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
+            public void onSwipeTop() {
+            }
+
+            public void onSwipeRight() {
+                if (count == 0) {
+                    imageView.setImageResource(R.drawable.good_night_img);
+                    textView.setText("Night");
+                    count = 1;
+                } else {
+                    imageView.setImageResource(R.drawable.good_morning_img);
+                    textView.setText("Morning");
+                    count = 0;
+                }
+            }
+
+            public void onSwipeLeft() {
+                if (count == 0) {
+                    imageView.setImageResource(R.drawable.good_night_img);
+                    textView.setText("Night");
+                    count = 1;
+                } else {
+                    imageView.setImageResource(R.drawable.good_morning_img);
+                    textView.setText("Morning");
+                    count = 0;
+                }
+            }
+
+            public void onSwipeBottom() {
+            }
+
+        });
+    }
+}
+
+     */
+
+    private static final String TAG = "LoginByPhoneActivity";
     int REQUEST_CODE = 1;
-    private TextView mAccountTv;
-    private TextView mPasswordTv;
-    private EditText mAccountEditText;
-    private EditText mPasswordEditText;
+    int count = 0;
+    private EditText mAccountText;
+    private EditText mPasswordText;
     private TextView mForgetPasswordTv;
-    private TextView mSignWithMessageTv;
     private Button mLoginBtn;
 
     //手机号规则
     public static final String REGEX_MOBILE_EXACT = "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$";
+    private Button mRegisterBtn;
+    private ImageView mImageView;
+    private TextView mTextView;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_by_phone);
         initView();
         initListener();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
+        mImageView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
+            public void onSwipeTop() {
+            }
+
+            public void onSwipeRight() {
+                if (count == 0) {
+                    mImageView.setImageResource(R.drawable.good_night_img);
+                    mTextView.setText("Night");
+                    count = 1;
+                } else {
+                    mImageView.setImageResource(R.drawable.good_morning_img);
+                    mTextView.setText("Morning");
+                    count = 0;
+                }
+            }
+
+            public void onSwipeLeft() {
+                if (count == 0) {
+                    mImageView.setImageResource(R.drawable.good_night_img);
+                    mTextView.setText("Night");
+                    count = 1;
+                } else {
+                    mImageView.setImageResource(R.drawable.good_morning_img);
+                    mTextView.setText("Morning");
+                    count = 0;
+                }
+            }
+
+            public void onSwipeBottom() {
+            }
+
+        });
     }
 
     private void initListener() {
@@ -69,16 +163,23 @@ public class LoginCellPhoneActivity extends AppCompatActivity {
                 handlerLoginEvent(v);
             }
         });
+        mRegisterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginByPhoneActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {
-        mAccountTv = findViewById(R.id.accountTv);
-        mPasswordTv = findViewById(R.id.passwordTv);
-        mAccountEditText = findViewById(R.id.accountEditText);
-        mPasswordEditText = findViewById(R.id.passwordEditText);
+        mAccountText = findViewById(R.id.accountTv);
+        mImageView = findViewById(R.id.imageView);
+        mTextView = findViewById(R.id.textView);
+        mPasswordText = findViewById(R.id.passwordTv);
         mForgetPasswordTv = findViewById(R.id.forgetPasswordTv);
-        mSignWithMessageTv = findViewById(R.id.signWithMessageTv);
         mLoginBtn = findViewById(R.id.loginBtn);
+        mRegisterBtn = findViewById(R.id.registerBtn);
     }
 
     @Override
@@ -96,16 +197,16 @@ public class LoginCellPhoneActivity extends AppCompatActivity {
             String account = splits[0];
             String password = splits[1];
             //回显数据
-            mAccountEditText.setText(account);
-            mPasswordEditText.setText(password);
+            mAccountText.setText(account);
+            mPasswordText.setText(password);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void handlerLoginEvent(View v) {
-        String accountText = mAccountEditText.getText().toString();
-        String passwordText = mPasswordEditText.getText().toString();
+        String accountText = mAccountText.getText().toString();
+        String passwordText = mPasswordText.getText().toString();
         //对账号密码进行合法性检查 这里只对其进行判空
         if (TextUtils.isEmpty(accountText)) {
             Toast.makeText(this, "账号不能为空", Toast.LENGTH_SHORT).show();
@@ -138,7 +239,7 @@ public class LoginCellPhoneActivity extends AppCompatActivity {
                 .subscribe(new Consumer<PhoneLoginBean>() {
                     @Override
                     public void accept(PhoneLoginBean phoneLoginBean) throws Exception {
-                        Log.i(TAG, "====================="+phoneLoginBean.getCode());
+                        Log.i(TAG, "=====================" + phoneLoginBean.getCode());
                     }
                 }, new ErrorConsumer() {
                     @Override

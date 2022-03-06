@@ -2,9 +2,7 @@ package com.example.totalapplication.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,16 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.totalapplication.R;
-import com.example.totalapplication.api.AndroidScheduler;
 import com.google.android.material.appbar.AppBarLayout;
-
-import java.io.IOException;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AnimalDetailActivity extends AppCompatActivity {
 

@@ -352,6 +352,8 @@ public interface ApiService {
 
     调用例子 : /user/account
      */
+    @GET("user/account")
+    Observable<String>userAccount();
     //获取用户信息 , 歌单，收藏，mv, dj 数量
     /*
     说明 : 登录后调用此接口 , 可以获取用户信息
@@ -359,47 +361,42 @@ public interface ApiService {
 
     调用例子 : /user/subcount
      */
+    @GET("user/subcount")
+    Observable<String>userSubCount();
     //获取用户等级信息
     /*
-    说明 : 登录后调用此接口 , 可以获取用户等级信息,包含当前登录天数,听歌次数,下一等级需要的登录天数和听歌次数,当前等级进度,对应 https://music.163.com/#/user/level
-
+    说明 : 登录后调用此接口 , 可以获取用户等级信息,包含当前登录天数,听歌次数,下一等级需要的登录天数和听歌次数,
+    当前等级进度,对应 https://music.163.com/#/user/level
     接口地址 : /user/level
-
     调用例子 : /user/level
-
      */
+    @GET("user/level")
+    Observable<String>userLevel();
     //获取用户绑定信息
     /*
     说明 : 登录后调用此接口 , 可以获取用户绑定信息
-
     必选参数 : uid : 用户 id
-
     接口地址 : /user/binding
-
     调用例子 : /user/binding?uid=32953014
-
      */
+    @POST("user/binding")
+    @FormUrlEncoded
+    Observable<String>usrBinding(@Field("uid")String uid);
     //用户绑定手机
     /*
     说明 : 登录后调用此接口 , 可以更换绑定手机
-
     必选参数 :
-
     phone : 手机号码
-
     oldcaptcha: 原手机号码的验证码
-
     captcha:新手机号码的验证码
-
     可选参数 :
-
     countrycode: 国家地区代码,默认 86
-
     接口地址 : /user/replacephone
-
     调用例子 : /user/replacephone?phone=xxx&captcha=1234&oldcaptcha=2345
-
      */
+    @POST("user/replacephone")
+    @FormUrlEncoded
+    Observable<String>userReplacePhone(@Field("phone")String phone,@Field("captcha")String captcha);
     //更新用户信息
     /*
     说明 : 登录后调用此接口 , 传入相关信息,可以更新用户信息
