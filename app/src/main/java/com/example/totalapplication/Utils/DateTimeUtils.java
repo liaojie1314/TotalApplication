@@ -157,6 +157,19 @@ public class DateTimeUtils {
         }
     }
 
+    public static Integer[] getTime() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+        return new Integer[]{
+                year, month, day, hour, minute, second
+        };
+    }
+
     /*
     private String getTime() {
         //获取系统当前时间(毫秒)

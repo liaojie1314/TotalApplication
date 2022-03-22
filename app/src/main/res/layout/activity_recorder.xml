@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey">
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:onClick="recorderClick"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/recoder_text"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_24"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <com.carlos.voiceline.mylibrary.VoiceLineView
+        android:id="@+id/voiceLine"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_260"
+        android:layout_below="@id/layout_title"
+        android:background="@android:color/white"
+        app:fineness="three"
+        app:maxVolume="200"
+        app:middleLine="@android:color/holo_red_light"
+        app:middleLineHeight="1dp"
+        app:sensibility="four"
+        app:viewMode="line"
+        app:voiceLine="@android:color/holo_red_light" />
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/voiceLine"
+        android:gravity="center"
+        android:paddingLeft="@dimen/dp_10"
+        android:text="00:00:00"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_40"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_stop"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:onClick="recorderClick"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:src="@mipmap/red_stop" />
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dp_20">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/icon_voice"
+        android:drawablePadding="@dimen/dp_10"
+        android:gravity="center"
+        android:text="录音机"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/my_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="00:00:00"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_18" />
+
+    <TextView
+        android:id="@+id/my_recorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="正在录音"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16" />
+
+</RelativeLayout>

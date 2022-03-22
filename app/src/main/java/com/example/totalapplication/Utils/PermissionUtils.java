@@ -2,26 +2,23 @@ package com.example.totalapplication.Utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 申请权限的工具类
- */
 public class PermissionUtils {
+
     public static final int CODE_RECORD_AUDIO = 0;
     public static final int CODE_GET_ACCOUNTS = 1;
     public static final int CODE_WRITE_CONTACTS = 2;
@@ -85,20 +82,23 @@ public class PermissionUtils {
             PERMISSION_WRITE_CALENDAR
     };
 
-    //授权成功的接口
-    public interface PermissionGranted {
+    // 表示授权成功的接口
+    public interface PermissionGrant {
         void onPermissionGranted(int requestCode);
     }
 
-    //封装请求权限函数
-    public static void requestPermissions(Activity activity, int requestCode, PermissionGranted permissionGranted) {
+    /*
+     * 封装请求权限的函数
+     * */
+    public static void requestPermission(Activity activity, int requestCode, PermissionGrant permissionGrant) {
         if (activity == null) {
             return;
         }
-        //排除不存在请求码
+        //排除不存在的请求码
         if (requestCode < 0 || requestCode >= requestPermissions.length) {
             return;
         }
+
         String requestPermission = requestPermissions[requestCode];
         //小于6.0默认授权状态
         if (Build.VERSION.SDK_INT < 23) {
@@ -108,26 +108,26 @@ public class PermissionUtils {
         try {
             checkSelfPermission = ActivityCompat.checkSelfPermission(activity, requestPermission);
         } catch (Exception e) {
-            Toast.makeText(activity, "请打开权限：" + requestPermission, Toast.LENGTH_SHORT).show();
+            ToastUtils.shortToast(activity, "请打开这个权限：" + requestPermission);
             return;
         }
-        //判断是否授权
+        //判断是否被授权了
         if (checkSelfPermission != PackageManager.PERMISSION_GRANTED) {
-            //没有授权,需申请授权
+            // 没有被授权，需要进行申请
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, requestPermission)) {
                 shouldShowRationale(activity, requestCode, requestPermission);
             } else {
                 ActivityCompat.requestPermissions(activity, new String[]{requestPermission}, requestCode);
             }
         } else {
-            //用户授权了,调用相关功能
-            //Toast.makeText(activity, "opened:" + requestPermission, Toast.LENGTH_SHORT).show();
-            permissionGranted.onPermissionGranted(requestCode);
+            //用户授权了，可以直接调用相关功能
+            ToastUtils.shortToast(activity, "opened：" + requestPermission);
+            permissionGrant.onPermissionGranted(requestCode);
         }
     }
 
-    private static void shouldShowRationale(Activity activity, int requestCode, String requestPermission) {
-        showMessageOkCancel(activity, "Rationle:" + requestPermission, new DialogInterface.OnClickListener() {
+    private static void shouldShowRationale(final Activity activity, final int requestCode, final String requestPermission) {
+        showMessageOKCancel(activity, "Rationale:" + requestPermission, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ActivityCompat.requestPermissions(activity, new String[]{requestPermission}, requestCode);
@@ -135,37 +135,33 @@ public class PermissionUtils {
         });
     }
 
-    /**
+    /*
      * 申请权限结果的方法
-     *
-     * @param activity          申请权限的activity
-     * @param requestCode       请求码
-     * @param permissions       申请的权限
-     * @param grantResults      申请的结果
-     * @param permissionGranted 回调接口
-     */
-    public static void requestPermissionResult(Activity activity, int requestCode, @NonNull String[] permissions,
-                                               @NonNull int[] grantResults, PermissionGranted permissionGranted) {
+     * */
+    public static void requestPermissionsResult(Activity activity, int requestCode,
+                                                @NonNull String[] permissions, @NonNull int[] grantResults, PermissionGrant permissionGrant) {
         if (activity == null) {
             return;
         }
         if (requestCode < 0 || requestCode >= requestPermissions.length) {
-            Toast.makeText(activity, "illegal requestCode:" + requestCode, Toast.LENGTH_SHORT).show();
+            ToastUtils.shortToast(activity, "illegal requestCode:" + requestCode);
             return;
         }
+
         if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            //授权成功
-            permissionGranted.onPermissionGranted(requestCode);
+            //授权成功了
+            permissionGrant.onPermissionGranted(requestCode);
         } else {
-            //授权失败
             String permissionError = permissions[requestCode];
             openSettingActivity(activity, "Result:" + permissionError);
         }
     }
 
-    //获取申请打开多个权限的结果
-    public static void requestMultiResult(Activity activity, @NonNull String[] permissions,
-                                          @NonNull int[] grantResults, PermissionGranted permissionGranted) {
+    /*
+     * 获取申请多个权限的结果
+     * */
+    public static void requestMultiResult(Activity activity, @NonNull String[] permissions, @NonNull int[] grantResults,
+                                          PermissionGrant permissionGrant) {
         if (activity == null) {
             return;
         }
@@ -178,16 +174,17 @@ public class PermissionUtils {
             }
         }
         if (notGranted.size() == 0) {
-            Toast.makeText(activity, "all permissions granted success", Toast.LENGTH_SHORT).show();
-            permissionGranted.onPermissionGranted(CODE_MULTI_PERMISSION);
+            ToastUtils.shortToast(activity, "all permission succewss");
+            permissionGrant.onPermissionGranted(CODE_MULTI_PERMISSION);
         } else {
-            openSettingActivity(activity, "those permissions need to be granted");
+            openSettingActivity(activity, "those permission need granted!");
         }
+
     }
 
-    //打开设置界面
-    private static void openSettingActivity(Activity activity, String msg) {
-        showMessageOkCancel(activity, msg, new DialogInterface.OnClickListener() {
+    /*打开设置界面*/
+    private static void openSettingActivity(final Activity activity, String msg) {
+        showMessageOKCancel(activity, msg, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
@@ -197,45 +194,46 @@ public class PermissionUtils {
                 activity.startActivity(intent);
             }
         });
-
     }
 
-    //弹出是否打开设置界面的对话框
-    private static void showMessageOkCancel(Activity activity, String msg, DialogInterface.OnClickListener okListener) {
+    /* 弹出是否打开的对话框*/
+    private static void showMessageOKCancel(Activity activity, String msg, DialogInterface.OnClickListener oklistener) {
         new AlertDialog.Builder(activity)
                 .setMessage(msg)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("cancel", null)
+                .setPositiveButton("OK", oklistener)
+                .setNegativeButton("Cancel", null)
                 .create().show();
     }
 
-    //一次申请多个权限
-    public static void requestMultiPermissions(Activity activity, PermissionGranted granted) {
-        //获取没有授权的权限
+    /* 一次申请多个权限*/
+    public static void requestMultiPermissions(final Activity activity, PermissionGrant grant) {
+        //获取没有被授权的权限
         ArrayList<String> permissionList = getNoGrantedPermission(activity, false);
-        ArrayList<String> shouldRationlePermissionList = getNoGrantedPermission(activity, true);
-        if (permissionList == null || shouldRationlePermissionList == null) {
+        final ArrayList<String> shouldRationalePermissionList = getNoGrantedPermission(activity, true);
+        if (permissionList == null || shouldRationalePermissionList == null) {
             return;
         }
+
         if (permissionList.size() > 0) {
             ActivityCompat.requestPermissions(activity, permissionList.toArray(new String[permissionList.size()]),
                     CODE_MULTI_PERMISSION);
-        } else if (shouldRationlePermissionList.size() > 0) {
-            showMessageOkCancel(activity, "please open those permissions", new DialogInterface.OnClickListener() {
+        } else if (shouldRationalePermissionList.size() > 0) {
+            showMessageOKCancel(activity, "should open those permissions", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ActivityCompat.requestPermissions(activity,
-                            shouldRationlePermissionList.toArray(new String[shouldRationlePermissionList.size()]),
-                            CODE_MULTI_PERMISSION);
+                            shouldRationalePermissionList.toArray(new String[shouldRationalePermissionList.size()]), CODE_MULTI_PERMISSION);
                 }
             });
         } else {
-            granted.onPermissionGranted(CODE_MULTI_PERMISSION);
+            grant.onPermissionGranted(CODE_MULTI_PERMISSION);
         }
     }
 
-    //获取没有被授权的权限列表
-    private static ArrayList<String> getNoGrantedPermission(Activity activity, Boolean isShouldRationle) {
+    /*
+     * 获取没有被授权的权限列表
+     * */
+    private static ArrayList<String> getNoGrantedPermission(Activity activity, boolean isShouldRationale) {
         ArrayList<String> permissions = new ArrayList<>();
         for (int i = 0; i < requestPermissions.length; i++) {
             String requestPermission = requestPermissions[i];
@@ -243,17 +241,18 @@ public class PermissionUtils {
             try {
                 checkSelfPermission = ActivityCompat.checkSelfPermission(activity, requestPermission);
             } catch (Exception e) {
-                Toast.makeText(activity, "please open those permissions", Toast.LENGTH_SHORT).show();
+                ToastUtils.shortToast(activity, "please open those permission");
                 return null;
             }
+
             if (checkSelfPermission != PackageManager.PERMISSION_GRANTED) {
-                //没有被授权,需要申请
+                //没有被授权需要去申请
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity, requestPermission)) {
-                    if (isShouldRationle) {
+                    if (isShouldRationale) {
                         permissions.add(requestPermission);
                     }
                 } else {
-                    if (!isShouldRationle) {
+                    if (!isShouldRationale) {
                         permissions.add(requestPermission);
                     }
                 }

@@ -3,13 +3,13 @@ buildscript {
     repositories {
         google()
 
-        //mavenCentral()
+        mavenCentral()
 
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
-        //classpath 'com.google.dagger:hilt-android-gradle-plugin:2.28-alpha'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.28-alpha'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,9 +18,13 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://s01.oss.sonatype.org/content/groups/public" }
         //jitpack
-        //maven { url "https://jitpack.io" }
-        //mavenCentral()
+        maven { url "https://jitpack.io" }
+
+        //Bmob的maven仓库地址--必填
+        maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+        mavenCentral()
         google()
         jcenter()
     }

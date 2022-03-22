@@ -106,4 +106,12 @@
     <string name="hint_phone_number_text">请输入手机号</string>
     <string name="login_by_email">邮箱登录</string>
     <string name="register_text">注册</string>
+    <string name="audio_text">简易录音机</string>
+
+    <!-- 搜索转场动画 -->
+    <string name="trans_anim_search_tv">search_tv_anim</string>
+    <string name="trans_anim_search_layout">search_layout_anim</string>
+    <string name="trans_anim_search_iv">search_iv_anim</string>
+    <string name="trans_anim_search_edit">search_edit_anim</string>
+    <string name="recoder_text">录音</string>
 </resources>

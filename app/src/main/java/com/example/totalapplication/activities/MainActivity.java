@@ -5,9 +5,12 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,9 +25,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.alibaba.fastjson.JSON;
 import com.example.totalapplication.R;
-import com.example.totalapplication.Utils.ToastUtils;
 import com.example.totalapplication.adapters.FragmentAdapter;
+import com.example.totalapplication.api.AndroidScheduler;
+import com.example.totalapplication.api.Api;
+import com.example.totalapplication.api.ApiService;
+import com.example.totalapplication.api.NetWorkModule;
+import com.example.totalapplication.api.exception.ApiException;
+import com.example.totalapplication.api.exception.ErrorConsumer;
 import com.example.totalapplication.domain.ShopInfoBean;
+import com.example.totalapplication.domain.UserDetail;
 import com.example.totalapplication.fragments.HomeFragment;
 import com.example.totalapplication.fragments.MapFragment;
 import com.example.totalapplication.fragments.MovieFragment;
@@ -34,6 +43,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,20 +53,39 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-//@AndroidEntryPoint
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+
+    @Inject
+    ApiService mApiService;
 
     BottomNavigationView bnView;
     ViewPager viewPager;
     Toolbar toolBar;
     DrawerLayout drawerLayout;
     private NavigationView mNavigationView;
+    private ImageView mImagePhoto;
+    private TextView mNickNameTv;
+
+    private long mId;
+    private String mNickname;
+    private String mAvatarUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent();
+        mId = intent.getLongExtra("id", 0);
         initView();
         initListener();
 
@@ -72,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentAdapter adapter = new FragmentAdapter(fragments, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-
-
         /*
         mApiService.uploadBody("参数")
                 .subscribeOn(Schedulers.io())//切换到io线程
@@ -134,9 +161,69 @@ public class MainActivity extends AppCompatActivity {
         boolean areNotificationsEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled();
         if (!areNotificationsEnabled) {
             gotoNotificationSetting();
-        }else {
-            ToastUtils.shortToast(this,"通知权限已打开");
         }
+    }
+
+    /**
+     * 获取用户详情
+     */
+
+    private void getUserDetail() {
+        mApiService.userDetail(mId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidScheduler.mainThread())
+                .subscribe(new Consumer<UserDetail>() {
+                    @Override
+                    public void accept(UserDetail userDetail) throws Exception {
+                        mNickname = userDetail.getProfile().getNickname();
+                        mAvatarUrl = userDetail.getProfile().getAvatarUrl();
+                    }
+                }, new ErrorConsumer() {
+                    @Override
+                    protected void error(ApiException e) {
+
+                    }
+                });
+    }
+
+    /**
+     * 获取账号信息
+     */
+    private void getUserAccount() {
+        mApiService.userAccount()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidScheduler.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+
+                    }
+                }, new ErrorConsumer() {
+                    @Override
+                    protected void error(ApiException e) {
+
+                    }
+                });
+    }
+
+    /**
+     * 获取用户信息 , 歌单，收藏，mv, dj 数量
+     */
+    private void getUserSubCount() {
+        mApiService.userSubCount()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidScheduler.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+
+                    }
+                }, new ErrorConsumer() {
+                    @Override
+                    protected void error(ApiException e) {
+
+                    }
+                });
     }
 
     private void gotoNotificationSetting() {
@@ -259,6 +346,15 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         toolBar = findViewById(R.id.tool_bar);
         mNavigationView = findViewById(R.id.navigation_view);
+        View headerView = mNavigationView.inflateHeaderView(R.layout.nav_header);
+        mImagePhoto = headerView.findViewById(R.id.img_photo);
+        mNickNameTv = headerView.findViewById(R.id.nickNameTv);
+        if (!TextUtils.isEmpty(mNickname)) {
+            mNickNameTv.setText(mNickname);
+        }
+        if (!TextUtils.isEmpty(mAvatarUrl)) {
+            Picasso.with(this).load(mAvatarUrl).into(mImagePhoto);
+        }
     }
     /*
      onCreateOptionsMenu(Menu menu)

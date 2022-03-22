@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dp_30">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_info">
+
+        <TextView
+            android:id="@+id/tv_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="详情"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_22"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_mc"
+            style="@style/nametv_detailinfo"
+            android:layout_below="@id/tv_detail"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="名称:" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/nametv_detailinfo"
+            android:layout_alignBottom="@id/tv_mc"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@id/tv_mc"
+            android:text="20220103_200450.amr" />
+
+        <TextView
+            android:id="@+id/tv_sj"
+            style="@style/nametv_detailinfo"
+            android:layout_below="@id/tv_mc"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="时间:" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/nametv_detailinfo"
+            android:layout_alignBottom="@id/tv_sj"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@id/tv_sj"
+            android:text="2022/01/03" />
+        <TextView
+            android:id="@+id/tv_dx"
+            style="@style/nametv_detailinfo"
+            android:layout_below="@id/tv_sj"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="大小:" />
+
+        <TextView
+            android:id="@+id/tv_size"
+            style="@style/nametv_detailinfo"
+            android:layout_alignBottom="@id/tv_dx"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@id/tv_dx"
+            android:text="13.14KB" />
+        <TextView
+            android:id="@+id/tv_lj"
+            style="@style/nametv_detailinfo"
+            android:layout_below="@id/tv_dx"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="路径:" />
+
+        <TextView
+            android:id="@+id/tv_path"
+            style="@style/nametv_detailinfo"
+            android:layout_alignTop="@id/tv_lj"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_toRightOf="@id/tv_lj"
+            android:text="bhegfoerhnsjkx" />
+        <TextView
+            android:id="@+id/tv_close"
+            android:layout_below="@id/tv_path"
+            android:layout_marginTop="@dimen/dp_20"
+            android:textColor="@color/purple_700"
+            android:text="关闭"
+            android:textSize="@dimen/sp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

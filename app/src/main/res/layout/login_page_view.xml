@@ -144,7 +144,7 @@
 <!--            android:layout_weight="2"-->
 <!--            android:padding="20dp" />-->
 
-        <com.example.customview.customview.keypad.KeypadView
+        <com.example.totalapplication.customviews.keypad.KeypadView
             android:id="@+id/number_key_pad"
             android:layout_width="0dp"
             android:layout_height="match_parent"

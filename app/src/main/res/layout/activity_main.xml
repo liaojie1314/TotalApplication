@@ -43,13 +43,14 @@
 
         </RelativeLayout>
         <!--    NavigationView一定要放在所有控件的最下面,否则点击事件可能会被屏蔽掉-->
+<!--        app:headerLayout="@layout/nav_header"-->
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view"
+            android:background="@color/colorItemPressedBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:tag="left"
-            app:headerLayout="@layout/nav_header"
             app:menu="@menu/drawer_menu" />
 
     </androidx.drawerlayout.widget.DrawerLayout>

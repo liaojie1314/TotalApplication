@@ -39,17 +39,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
+@AndroidEntryPoint
 public class MusicFragment extends Fragment {
+    @Inject
+    ApiService mApiService;
+
     private static final String TAG = "MusicFragment";
     private LooperPager mLooperPager;
     private List<PagerItem> mData = new ArrayList<>();
     private LinearLayout mLocalMusicLL;
-    private ApiService mApiService;
+
     private NotificationManager mManager;
 
 
@@ -173,17 +180,13 @@ public class MusicFragment extends Fragment {
     }
 
     private void initData() {
-        NetWorkModule netWorkModule = new NetWorkModule();
-        OkHttpClient okHttpClient = netWorkModule.providerOkHttpClient();
-        Retrofit retrofit = netWorkModule.providerRetrofit(okHttpClient, Api.OPEN_API_BASE_URL);
-        mApiService = netWorkModule.providerApiService(retrofit);
         mApiService.getPic(1, 5)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidScheduler.mainThread())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
-                        Log.i(TAG, "data=======>" + s);
+
                     }
                 }, new ErrorConsumer() {
                     @Override

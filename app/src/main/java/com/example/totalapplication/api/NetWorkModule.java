@@ -1,22 +1,27 @@
 package com.example.totalapplication.api;
 
-
 import android.util.Log;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.components.ApplicationComponent;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-//@InstallIn(ApplicationComponent.class)
-//@Module
+@InstallIn(ApplicationComponent.class)
+@Module
 public class NetWorkModule {
-    //获取httpClient实例
-    //@Singleton//指定为单例(不需要创建多次)
-    //@Provides
-    public OkHttpClient providerOkHttpClient() {
-        //拦截器
+
+
+    @Singleton
+    @Provides
+    OkHttpClient provideOkHttpClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
@@ -28,25 +33,22 @@ public class NetWorkModule {
                 .build();
     }
 
-    //@Singleton
-    //@Provides
-    public Retrofit providerRetrofit(OkHttpClient client,String url) {
-
-        //传入参数为body时
-        //.addConverterFactory(ScalarsConverterFactory.create())
-        //需修改为.addConverterFactory(GsonConverterFactory.create())
-
+    @Singleton
+    @Provides
+    Retrofit provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(Api.NETEASE_MUSIC_BASE_URL)
                 .client(client)
+                //.addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
-    //@Singleton
-    //@Provides
-    public ApiService providerApiService(Retrofit retrofit){
+    @Singleton
+    @Provides
+    ApiService provideApiService(Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }
+
 }

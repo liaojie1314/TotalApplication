@@ -2,22 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="#a2c699">
+    android:background="@drawable/background_nav_header_radius">
 
     <ImageView
         android:id="@+id/img_photo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/music" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_40"
+        android:background="@drawable/background_nav_image_radius" />
 
     <TextView
+        android:id="@+id/nickNameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/img_photo"
         android:layout_centerInParent="true"
         android:layout_marginTop="8dp"
-        android:text="xxx"
         android:textColor="#ffffff"
         android:textSize="22sp" />
 </RelativeLayout>

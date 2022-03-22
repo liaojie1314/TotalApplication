@@ -96,12 +96,12 @@
             <EditText
                 android:id="@+id/accountTv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_email_white_24dp"
-                android:drawablePadding="16dp"
+                android:drawablePadding="18dp"
                 android:fontFamily="@font/calibri"
                 android:hint="@string/hint_phone_number_text"
-                android:inputType="textEmailAddress"
+                android:inputType="number"
                 android:maxLines="1"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
@@ -116,9 +116,9 @@
             <EditText
                 android:id="@+id/passwordTv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_lock_white_24dp"
-                android:drawablePadding="16dp"
+                android:drawablePadding="18dp"
                 android:fontFamily="@font/calibri"
                 android:hint="@string/hint_password_text"
                 android:inputType="textPassword"

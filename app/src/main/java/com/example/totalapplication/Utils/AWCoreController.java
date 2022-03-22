@@ -4,15 +4,13 @@ import android.app.Activity;
 import android.net.http.SslError;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-
 import androidx.fragment.app.Fragment;
-
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.WebChromeClient;
+import com.just.agentweb.WebViewClient;
 
 public class AWCoreController {
 

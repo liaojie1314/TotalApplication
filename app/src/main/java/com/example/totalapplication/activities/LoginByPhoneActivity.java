@@ -1,11 +1,15 @@
 package com.example.totalapplication.activities;
 
+import static android.os.Build.VERSION_CODES.M;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -17,11 +21,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.totalapplication.R;
+import com.example.totalapplication.Utils.DateTimeUtils;
+import com.example.totalapplication.Utils.RSAUtils;
+import com.example.totalapplication.Utils.ToastUtils;
 import com.example.totalapplication.api.AndroidScheduler;
 import com.example.totalapplication.api.Api;
 import com.example.totalapplication.api.ApiService;
@@ -36,67 +44,23 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
-import static android.os.Build.VERSION_CODES.M;
-
+@AndroidEntryPoint
 public class LoginByPhoneActivity extends AppCompatActivity {
-    /*
-    public class MainActivity extends AppCompatActivity {
 
-    ImageView imageView;
-    TextView textView;
-    int count = 0;
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
-        imageView = findViewById(R.id.imageView);
-        textView = findViewById(R.id.textView);
-        imageView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
-            public void onSwipeTop() {
-            }
-
-            public void onSwipeRight() {
-                if (count == 0) {
-                    imageView.setImageResource(R.drawable.good_night_img);
-                    textView.setText("Night");
-                    count = 1;
-                } else {
-                    imageView.setImageResource(R.drawable.good_morning_img);
-                    textView.setText("Morning");
-                    count = 0;
-                }
-            }
-
-            public void onSwipeLeft() {
-                if (count == 0) {
-                    imageView.setImageResource(R.drawable.good_night_img);
-                    textView.setText("Night");
-                    count = 1;
-                } else {
-                    imageView.setImageResource(R.drawable.good_morning_img);
-                    textView.setText("Morning");
-                    count = 0;
-                }
-            }
-
-            public void onSwipeBottom() {
-            }
-
-        });
-    }
-}
-
-     */
+    @Inject
+    ApiService mApiService;
 
     private static final String TAG = "LoginByPhoneActivity";
     int REQUEST_CODE = 1;
@@ -111,17 +75,19 @@ public class LoginByPhoneActivity extends AppCompatActivity {
     private Button mRegisterBtn;
     private ImageView mImageView;
     private TextView mTextView;
+    private Map<Integer, String> mRsaKeyMap;
+    private long mId;
+    private int mCode;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login_by_phone);
         initView();
         initListener();
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
         mImageView.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             public void onSwipeTop() {
             }
@@ -166,8 +132,15 @@ public class LoginByPhoneActivity extends AppCompatActivity {
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginByPhoneActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                Intent registerIntent = new Intent(LoginByPhoneActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
+            }
+        });
+        mForgetPasswordTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent forgetPasswordIntent = new Intent(LoginByPhoneActivity.this, ForgetPasswordActivity.class);
+                startActivity(forgetPasswordIntent);
             }
         });
     }
@@ -196,9 +169,12 @@ public class LoginByPhoneActivity extends AppCompatActivity {
             String[] splits = info.split("\\*\\*\\*");
             String account = splits[0];
             String password = splits[1];
+            //RSA解密
+            String decryptAccount = RSAUtils.decrypt(account, mRsaKeyMap.get(1));
+            String decryptPassword = RSAUtils.decrypt(password, mRsaKeyMap.get(1));
             //回显数据
-            mAccountText.setText(account);
-            mPasswordText.setText(password);
+            mAccountText.setText(decryptAccount);
+            mPasswordText.setText(decryptPassword);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -221,30 +197,65 @@ public class LoginByPhoneActivity extends AppCompatActivity {
             return;
         }
         //发送请求
-        send(accountText, passwordText);
-        //保存
-        saveUserInfo(accountText, passwordText);
-        Intent intent = new Intent(this, MainActivity.class);
-        this.startActivity(intent);
+        sendByPhone(accountText, passwordText);
+        if (mCode == 200) {
+            //登录成功
+            //加密
+            try {
+                // 获取公钥和私钥
+                mRsaKeyMap = RSAUtils.genKeyPair();
+                //RSA加密
+                String encryptAccount = RSAUtils.encrypt(accountText, mRsaKeyMap.get(0));
+                String encryptPassword = RSAUtils.encrypt(passwordText, mRsaKeyMap.get(0));
+                //保存
+                saveUserInfo(encryptAccount, encryptPassword);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Intent intent = new Intent(LoginByPhoneActivity.this, MainActivity.class);
+
+            intent.putExtra("id", mId);
+            this.startActivity(intent);
+        } else if (mCode == 502) {
+            ToastUtils.shortToast(this, "密码错误");
+        } else {
+            ToastUtils.shortToast(this, "未知错误");
+        }
     }
 
-    private void send(String accountText, String passwordText) {
-        NetWorkModule netWorkModule = new NetWorkModule();
-        OkHttpClient okHttpClient = netWorkModule.providerOkHttpClient();
-        Retrofit retrofit = netWorkModule.providerRetrofit(okHttpClient, Api.NETEASE_MUSIC_BASE_URL);
-        ApiService apiService = netWorkModule.providerApiService(retrofit);
-        apiService.loginCellPhone(accountText, passwordText)
+
+    private void sendByPhone(String accountText, String passwordText) {
+        mApiService.loginCellPhone(accountText, passwordText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidScheduler.mainThread())
                 .subscribe(new Consumer<PhoneLoginBean>() {
                     @Override
                     public void accept(PhoneLoginBean phoneLoginBean) throws Exception {
-                        Log.i(TAG, "=====================" + phoneLoginBean.getCode());
+                        mId = phoneLoginBean.getAccount().getId();
+                        mCode = phoneLoginBean.getCode();
+                        Log.i(TAG, "accept: =======>"+phoneLoginBean);
                     }
                 }, new ErrorConsumer() {
                     @Override
                     protected void error(ApiException e) {
                         Log.i(TAG, "error:" + e);
+                    }
+                });
+    }
+
+    private void sendByEmail(String emailText, String passwordText) {
+        mApiService.loginEmail(emailText, passwordText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidScheduler.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+
+                    }
+                }, new ErrorConsumer() {
+                    @Override
+                    protected void error(ApiException e) {
+
                     }
                 });
     }
@@ -289,10 +300,9 @@ public class LoginByPhoneActivity extends AppCompatActivity {
 
     /**
      * 此函数为申请权限的回调函数,无论成功失败都会调用这个函数
-     *
-     * @param requestCode  请求码
-     * @param permissions  申请的权限
-     * @param grantResults 申请的结果
+     * requestCode  请求码
+     * permissions  申请的权限
+     * grantResults 申请的结果
      */
 //    @Override
 //    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -343,4 +353,8 @@ public class LoginByPhoneActivity extends AppCompatActivity {
     }
 }
      */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

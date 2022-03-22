@@ -1,3 +1,3 @@
 include ':app'
-include ':lib_permission'
+//include ':lib_permission'
 rootProject.name = "TotalApplication"

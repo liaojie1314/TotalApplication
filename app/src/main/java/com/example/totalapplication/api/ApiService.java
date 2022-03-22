@@ -1,6 +1,7 @@
 package com.example.totalapplication.api;
 
 import com.example.totalapplication.domain.PhoneLoginBean;
+import com.example.totalapplication.domain.UserDetail;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -197,6 +198,7 @@ public interface ApiService {
     @POST("login")
     @FormUrlEncoded
     Observable<String> loginEmail(@Field("email") String email, @Field("password") String password);
+
     //二维码登录
     // 涉及到 3 个接口,调用务必带上时间戳,防止缓存
     /*
@@ -218,18 +220,22 @@ public interface ApiService {
     调用可参考项目文件例子/public/qrlogin.html (访问地址:http://localhost:3000/qrlogin.html)
      */
     @GET("login/qr/key")
-    Observable<String>qrKey();
+    Observable<String> qrKey();
+
     @POST("login/qr/create")
     @FormUrlEncoded
-    Observable<String>qrCreate(@Field("key")String key);
+    Observable<String> qrCreate(@Field("key") String key);
+
     @POST("login/qr/check")
     @FormUrlEncoded
-    Observable<String>qrCheck(@Field("key")String key);
+    Observable<String> qrCheck(@Field("key") String key);
+
     //刷新登录
     //说明 : 调用此接口 , 可刷新登录状态
     //调用例子 : /login/refresh
     @GET
-    Observable<String>loginRefresh();
+    Observable<String> loginRefresh();
+
     //发送验证码
     //说明 : 调用此接口 ,传入手机号码, 可发送验证码
     //必选参数 : phone: 手机号码
@@ -238,7 +244,8 @@ public interface ApiService {
     //调用例子 : /captcha/sent?phone=13xxx
     @POST("captcha/sent")
     @FormUrlEncoded
-    Observable<String>captchaSent(@Field("phone")String phone,@Field("ctcode")String ctcode);
+    Observable<String> captchaSent(@Field("phone") String phone, @Field("ctcode") String ctcode);
+
     //验证验证码
     /*
     说明 : 调用此接口 ,传入手机号码和验证码, 可校验验证码是否正确
@@ -251,7 +258,8 @@ public interface ApiService {
      */
     @POST("captcha/verify")
     @FormUrlEncoded
-    Observable<String>captchaVerify(@Field("phone")String phone,@Field("captcha")String captcha);
+    Observable<String> captchaVerify(@Field("phone") String phone, @Field("captcha") String captcha);
+
     //注册(修改密码)
     /*
     说明 : 调用此接口 ,传入手机号码和验证码,密码,昵称, 可注册网易云音乐账号(同时可修改密码)
@@ -267,8 +275,8 @@ public interface ApiService {
      */
     @POST("register/cellphone")
     @FormUrlEncoded
-    Observable<String>registerCellphone(@Field("captcha")String captcha,@Field("phone")String phone,
-                                        @Field("password")String password,@Field("nickname")String nickname);
+    Observable<String> registerCellphone(@Field("captcha") String captcha, @Field("phone") String phone,
+                                         @Field("password") String password, @Field("nickname") String nickname);
 
     //检测手机号码是否已注册
     /*
@@ -282,7 +290,7 @@ public interface ApiService {
      */
     @POST("cellphone/existence/check")
     @FormUrlEncoded
-    Observable<String>cellphoneExistenceCheck(@Field("phone")String phone);
+    Observable<String> cellphoneExistenceCheck(@Field("phone") String phone);
 
     //初始化昵称
     /*
@@ -293,7 +301,7 @@ public interface ApiService {
      */
     @POST("activate/init/profile")
     @FormUrlEncoded
-    Observable<String>activateInitProfile(@Field("nickname")String nickname);
+    Observable<String> activateInitProfile(@Field("nickname") String nickname);
 
     //重复昵称检测
     /*
@@ -303,7 +311,8 @@ public interface ApiService {
      */
     @POST("nickname/check")
     @FormUrlEncoded
-    Observable<String>nicknameCheck(@Field("nickname")String nickname);
+    Observable<String> nicknameCheck(@Field("nickname") String nickname);
+
     //更换绑定手机
     /*
     说明 : 调用此接口 ,可更换绑定手机(流程:先发送验证码到原手机号码,再发送验证码到新手机号码然后再调用此接口)
@@ -316,53 +325,49 @@ public interface ApiService {
      */
     @POST("rebind")
     @FormUrlEncoded
-    Observable<String>rebind(@Field("oldcaptcha")String oldcaptcha,@Field("captcha")String captcha,
-                             @Field("phone")String phone,@Field("ctcode")String ctcode);
+    Observable<String> rebind(@Field("oldcaptcha") String oldcaptcha, @Field("captcha") String captcha,
+                              @Field("phone") String phone, @Field("ctcode") String ctcode);
+
     //退出登录
     /*
     说明 : 调用此接口 , 可退出登录
-
     调用例子 : /logout
             登录状态
-
     说明 : 调用此接口,可获取登录状态
-
     接口地址 : /login/status
      */
     @GET("login/status")
-    Observable<String>loginStatus();
+    Observable<String> loginStatus();
+
     //获取用户详情
     /*
     说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户详情
-
     必选参数 : uid : 用户 id
-
     接口地址 : /user/detail
-
     调用例子 : /user/detail?uid=32953014
      */
     @POST("user/detail")
     @FormUrlEncoded
-    Observable<String>userDetail(@Field("uid")String uid);
+    Observable<UserDetail> userDetail(@Field("uid") long uid);
+
     //获取账号信息
     /*
     说明 : 登录后调用此接口 ,可获取用户账号信息
-
     接口地址 : /user/account
-
     调用例子 : /user/account
      */
     @GET("user/account")
-    Observable<String>userAccount();
+    Observable<String> userAccount();
+
     //获取用户信息 , 歌单，收藏，mv, dj 数量
     /*
     说明 : 登录后调用此接口 , 可以获取用户信息
     接口地址 : /user/subcount
-
     调用例子 : /user/subcount
      */
     @GET("user/subcount")
-    Observable<String>userSubCount();
+    Observable<String> userSubCount();
+
     //获取用户等级信息
     /*
     说明 : 登录后调用此接口 , 可以获取用户等级信息,包含当前登录天数,听歌次数,下一等级需要的登录天数和听歌次数,
@@ -371,7 +376,8 @@ public interface ApiService {
     调用例子 : /user/level
      */
     @GET("user/level")
-    Observable<String>userLevel();
+    Observable<String> userLevel();
+
     //获取用户绑定信息
     /*
     说明 : 登录后调用此接口 , 可以获取用户绑定信息
@@ -381,7 +387,8 @@ public interface ApiService {
      */
     @POST("user/binding")
     @FormUrlEncoded
-    Observable<String>usrBinding(@Field("uid")String uid);
+    Observable<String> usrBinding(@Field("uid") String uid);
+
     //用户绑定手机
     /*
     说明 : 登录后调用此接口 , 可以更换绑定手机
@@ -396,256 +403,234 @@ public interface ApiService {
      */
     @POST("user/replacephone")
     @FormUrlEncoded
-    Observable<String>userReplacePhone(@Field("phone")String phone,@Field("captcha")String captcha);
+    Observable<String> userReplacePhone(@Field("phone") String phone, @Field("captcha") String captcha);
+
     //更新用户信息
     /*
     说明 : 登录后调用此接口 , 传入相关信息,可以更新用户信息
-
     必选参数 :
-
     gender: 性别 0:保密 1:男性 2:女性
-
     birthday: 出生日期,时间戳 unix timestamp
-
     nickname: 用户昵称
-
     province: 省份id
-
     city: 城市id
-
     signature：用户签名
-
-    接口地址 : /user/update
-
-    调用例子 : /user/update?gender=0&signature=测试签名&city=440300&nickname=binary&birthday=1525918298004&province=440000
-
+    调用例子 : /user/update
+    接口地址 : /user/update?gender=0&signature=测试签名&city=440300&nickname=binary&birthday=1525918298004&province=440000
      */
+    @POST("user/update")
+    @FormUrlEncoded
+    Observable<String> userUpdate(@Field("gender") int gender, @Field("birthday") String birthday,
+                                  @Field("nickname") String nickname, @Field("province") String province,
+                                  @Field("city") String city, @Field("signature") String signature);
+
     //更新头像
     /*
-    说明 : 登录后调用此接口,使用'Content-Type': 'multipart/form-data'上传图片 formData(name 为'imgFile'),可更新头像(参考: https://github.com/Binaryify/NeteaseCloudMusicApi/blob/master/public/avatar_update.html ),支持命令行调用,参考module_example目录下avatar_upload.js
-
+    说明 : 登录后调用此接口,使用'Content-Type': 'multipart/form-data'上传图片 formData(name 为'imgFile'),
+    可更新头像(参考: https://github.com/Binaryify/NeteaseCloudMusicApi/blob/master/public/avatar_update.html )
+    支持命令行调用,参考module_example目录下avatar_upload.js
     可选参数 :
-
     imgSize : 图片尺寸,默认为 300
-
     imgX : 水平裁剪偏移,方形图片可不传,默认为 0 imgY : 垂直裁剪偏移,方形图片可不传,默认为 0
-
     接口地址 : /avatar/upload
-
     调用例子 : /avatar/upload?imgSize=200
      */
+    @POST("avatar/upload")
+    @FormUrlEncoded
+    Observable<String> avatarUpload();
     //国家编码列表
     /*
     说明 : 调用此接口,可获取国家编码列表
-
     接口地址 : /countries/code/list
-
      */
+
+    @GET("countries/code/list")
+    Observable<String> countriesCodeList();
+
 //    获取用户歌单
     /*
     说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户歌单
-
     必选参数 : uid : 用户 id
-
     可选参数 :
-
     limit : 返回数量 , 默认为 30
-
     offset : 偏移数量，用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
-
     接口地址 : /user/playlist
-
     调用例子 : /user/playlist?uid=32953014
-
     返回数据如下图 : 用户歌单
-
      */
+
+    @POST("user/playlist")
+    @FormUrlEncoded
+    Observable<String> userPlaylist(@Field("uid") String uid);
+
     //更新歌单
     /*
     说明 : 登录后调用此接口,可以更新用户歌单
-
     必选参数 :
-
     id:歌单id
-
     name:歌单名字
-
     desc:歌单描述
-
     tags:歌单tag ,多个用 `;` 隔开,只能用官方规定标签
-
     接口地址 : /playlist/update
-
     调用例子 : /playlist/update?id=24381616&name=新歌单&desc=描述&tags=欧美
-
      */
+
+    @POST("playlist/update")
+    @FormUrlEncoded
+    Observable<String> playlistUpdate(@Field("id") String id, @Field("name") String name,
+                                      @Field("desc") String desc, @Field("tags") String tags);
+
     //更新歌单描述
     /*
     说明 : 登录后调用此接口,可以单独更新用户歌单描述
-
     必选参数 :
-
     id:歌单id
-
     desc:歌单描述
-
     接口地址 : /playlist/desc/update
-
     调用例子 : /playlist/desc/update?id=24381616&desc=描述
-
      */
+
+    @POST("playlist/desc/update")
+    @FormUrlEncoded
+    Observable<String> playlistDescUpdate(@Field("id") String id, @Field("desc") String desc);
+
     //更新歌单名
     /*
     说明 : 登录后调用此接口,可以单独更新用户歌单名
-
     必选参数 :
-
     id: 歌单id
-
     name: 歌单名
-
     接口地址 : /playlist/name/update
-
     调用例子 : /playlist/name/update?id=24381616&name=歌单名
-
      */
+
+    @POST("playlist/name/update")
+    @FormUrlEncoded
+    Observable<String> playlistNameUpdate(@Field("id") String id, @Field("name") String name);
+
     //更新歌单标签
     /*
     说明 : 登录后调用此接口,可以单独更新用户歌单标签
-
     必选参数 :
-
     id: 歌单id
-
     tags: 歌单标签
-
     接口地址 : /playlist/tags/update
-
     调用例子 : /playlist/tags/update?id=24381616&tags=学习
-
      */
+
+    @POST("playlist/tags/update")
+    @FormUrlEncoded
+    Observable<String> playlistTagsUpdate(@Field("id") String id, @Field("tags") String tags);
+
     //歌单封面上传
     /*
-    说明 : 登录后调用此接口,使用'Content-Type': 'multipart/form-data'上传图片 formData(name 为'imgFile'),可更新歌单封面(参考:https://github.com/Binaryify/NeteaseCloudMusicApi/blob/master/public/playlist_cover_update.html)
-
+    说明 : 登录后调用此接口,使用'Content-Type': 'multipart/form-data'上传图片 formData(name 为'imgFile'),
+    可更新歌单封面(参考:https://github.com/Binaryify/NeteaseCloudMusicApi/blob/master/public/playlist_cover_update.html)
     必选参数 :
     id: 歌单 id 3143833470
-
     可选参数 :
-
     imgSize : 图片尺寸,默认为 300
-
     imgX : 水平裁剪偏移,方形图片可不传,默认为 0 imgY : 垂直裁剪偏移,方形图片可不传,默认为 0
-
     接口地址 : /playlist/cover/update
-
     调用例子 : /playlist/cover/update?id=3143833470&imgSize=200
-
      */
+
+    @POST("playlist/cover/update")
+    @FormUrlEncoded
+    Observable<String> playlistCoverUpdate(@Field("id") String id);
+
     //调整歌单顺序
     /*
     说明 : 登录后调用此接口,可以根据歌单 id 顺序调整歌单顺序
-
     必选参数 :
-
     ids: 歌单 id 列表
-
     接口地址 : /playlist/order/update
-
     调用例子 : /playlist/order/update?ids=[111,222]
-
      */
+
+    @POST("playlist/order/update")
+    @FormUrlEncoded
+    Observable<String> playlistOrderUpdate(@Field("ids") String[] ids);
+
     //调整歌曲顺序
     /*
     说明 : 登录后调用此接口,可以根据歌曲 id 顺序调整歌曲顺序
-
     必选参数 :
     pid: 歌单 id
-
     ids: 歌曲 id 列表
-
     接口地址 : /song/order/update
-
     调用例子 : /song/order/update?pid=2039116066&ids=[5268328,1219871]
-
      */
+
+    @POST("song/order/update")
+    @FormUrlEncoded
+    Observable<String> songOrderUpdate(@Field("pid") String pid, @Field("ids") String[] ids);
+
     //获取用户历史评论
 /*
     说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户历史评论
-
     必选参数 : uid : 用户 id
-
     可选参数 :
-
     limit : 返回数量 , 默认为 10
-
     time: 上一条数据的 time,第一页不需要传,默认为 0
-
     接口地址 : /user/comment/history
-
     调用例子 : /user/comment/history?uid=32953014 /user/comment/history?uid=32953014&limit=1&time=1616217577564 (需要换成自己的用户 id)
-
  */
+
+    @POST("user/comment/history")
+    @FormUrlEncoded
+    Observable<String> userCommentHistory(@Field("uid") String uid);
 
     //获取用户电台
 /*
     说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户电台
-
     必选参数 : uid : 用户 id
-
     接口地址 : /user/dj
-
     调用例子 : /user/dj?uid=32953014
-
  */
+
+    @POST("user/dj")
+    @FormUrlEncoded
+    Observable<String> userDj(@Field("uid") String uid);
+
     //获取用户关注列表
 /*
     说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户关注列表
-
     必选参数 : uid : 用户 id
-
     可选参数 :
-
     limit : 返回数量 , 默认为 30
-
     offset : 偏移数量，用于分页 ,如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
-
     接口地址 : /user/follows
-
     调用例子 : /user/follows?uid=32953014
-
  */
+
+    @POST("user/follows")
+    @FormUrlEncoded
+    Observable<String>userFollows(@Field("uid")String uid);
+
     //获取用户粉丝列表
 /*
     说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户粉丝列表
-
     必选参数 : uid : 用户 id
-
     可选参数 : limit : 返回数量 , 默认为 30
-
     offset : 偏移数量，用于分页 ,如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
-
     接口地址 : /user/followeds
-
     调用例子 : /user/followeds?uid=32953014 /user/followeds?uid=416608258&limit=1 /user/followeds?uid=416608258&limit=1&offset=1
-
  */
+
+    @POST("user/followeds")
+    @FormUrlEncoded
+    Observable<String>userFolloweds(@Field("uid")String uid);
+
     //获取用户动态
 /*
     说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户动态
-
     必选参数 : uid : 用户 id
-
     可选参数 : limit : 返回数量 , 默认为 30
-
     lasttime : 返回数据的 lasttime ,默认-1,传入上一次返回结果的 lasttime,将会返回下一页的数据
-
     接口地址 : /user/event
-
     调用例子 : /user/event?uid=32953014 /user/event?uid=32953014&limit=1&lasttime=1558011138743
-
     返回结果的type参数对应:
-
             18 分享单曲
             19 分享专辑
             17、28 分享电台节目
@@ -654,35 +639,36 @@ public interface ApiService {
             35、13 分享歌单
             24 分享专栏文章
             41、21 分享视频
-
  */
+
+    @POST("user/event")
+    @FormUrlEncoded
+    Observable<String>userEvent(@Field("uid")String uid);
 
     //转发用户动态
 /*
     说明 : 登录后调用此接口 ,可以转发用户动态
-
     必选参数 : uid : 用户 id
-
     evId : 动态 id
-
     forwards : 转发的评论
-
     接口地址 : /event/forward
-
     调用例子 : /event/forward?evId=6712917601&uid=32953014&forwards=测试内容
-
  */
+
+    @POST("event/forward")
+    @FormUrlEncoded
+    Observable<String>eventForward(@Field("uid")String uid);
+
     //删除用户动态
 /*
     说明 : 登录后调用此接口 ,可以删除用户动态
-
     必选参数 : evId : 动态 id
-
     接口地址 : /event/del
-
     调用例子 : /event/del?evId=6712917601
-
  */
+
+
+
     //分享文本、歌曲、歌单、mv、电台、电台节目到动态
 /*
     说明 : 登录后调用此接口 ,可以分享文本、歌曲、歌单、mv、电台、电台节目到动态

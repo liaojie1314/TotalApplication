@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginRight="@dimen/dp_10"
+    android:background="@drawable/bg_audio">
+
+    <TextView
+        android:id="@+id/titleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20200102_211622"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/timeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleTV"
+        android:layout_marginTop="@dimen/dp_5"
+        android:text="2022/01/02"
+        android:textSize="@dimen/sp_16" />
+
+    <ImageView
+        android:id="@+id/playIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/timeTV"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/red_play" />
+
+    <TextView
+        android:id="@+id/durationTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/timeTV"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_toLeftOf="@id/playIV"
+        android:text="00:00:00" />
+
+    <LinearLayout
+        android:id="@+id/controllerLL"
+        android:layout_below="@id/playIV"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pb"
+            android:layout_marginTop="@dimen/dp_10"
+            style="?android:attr/progressBarStyleHorizontal"/>
+    </LinearLayout>
+</RelativeLayout>
